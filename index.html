@@ -67,8 +67,10 @@
 
     // Função para criar o formulário com base no tipo selecionado
     function criarFormulario() {
-        var tipoFormulario = $("#tipoFormularios").val();
-        var formularios = formularios[tipoFormulario]
+        var tipoFormulario = $("#tipoFormulario").val();
+        var formulario = formularios[tipoFormulario]
+        console.log(formulario, formularios, tipoFormulario)
+
         var formularioHTML = "";
 
         Object.keys(formulario).forEach(function (key) {
@@ -84,7 +86,7 @@
     // Função para preencher os dados do formulário selecionado
     function preencherDados() {
         var tipoFormulario = $("#tipoFormulario").val();
-        var formulario = formulario[tipoFormulario]
+        var formulario = formularios[tipoFormulario]
 
         Object.keys(formulario).forEach(function (key) {
             formulario[key] = $("#" + key).val();
@@ -95,7 +97,7 @@
     function copiarDados() {
         preencherDados();
         var tipoFormulario = $("#tipoFormulario").val();
-        var formulario = formulario[tipoFormulario]
+        var formulario = formularios[tipoFormulario]
 
         var textoCopiado = "";
         var textoCopiadoHtml = "";
