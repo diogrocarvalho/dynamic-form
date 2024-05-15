@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário dinâmico com Bootstrap e JSON</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1>Formulário dinâmico com Bootstrap e JSON</h1>
+    <div class="form-group">
+        <label for="tipoFormulario">Selecione o tipo de formulário:</label>
+        <select class="form-control" id="tipoFormulario" onchange="criarFormulario()">
+            <option value="A">Formulário A</option>
+            <option value="B">Formulário B</option>
+            <option value="C">Formulário C</option>
+            <option value="D">Formulário D</option>
+        </select>
+    </div>
+    <form id="myForm">
+        <div id="formulario"></div>
+        <button type="button" class="btn btn-primary" onclick="copiarDados()">Copiar Dados</button>
+    </form>
+
+    <hr>
+
+    <div id="dadosJson"></div>
+</div>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // JSONs com os dados dos formulários
+    var formularios = {
+
+        A: {
+            nome: "",
+            contato: "",
+            email: "",
+            produto: "",
+            motivo: ""
+        },
+        B: {
+            incidente: "",
+            horario: "",
+            horario_acionamento: "Horário de acionamento",
+            resp_acionado: "Responsável acionado" 
+        },
+        C: {
+            incidente: "",
+            horario: "",
+            horario_acionamento: "Horário de acionamento",
+            resp_acionado: "Responsável acionado" 
+        },
+        D: {
+            operadora: "",
+            horario: "",
+            protocolo: "Protocolo da operadora"
+        }
+    }
+
+    // Função para criar o formulário com base no tipo selecionado
+    function criarFormulario() {
+        var tipoFormulario = $("#tipoFormularios").val();
+        var formularios = formularios[tipoFormulario]
+        var formularioHTML = "";
+
+        Object.keys(formulario).forEach(function (key) {
+            formularioHTML += '<div class="form-group">';
+            formularioHTML += '<label for="' + key + '">' + key.charAt(0).toUpperCase() + key.slice(1) + '</label>';
+            formularioHTML += '<input type="text" class="form-control" id="' + key + '" placeholder="Digite o ' + key + '">';
+            formularioHTML += '</div>';
+        });
+
+        $("#formulario").html(formularioHTML);
+    }
+
+    // Função para preencher os dados do formulário selecionado
+    function preencherDados() {
+        var tipoFormulario = $("#tipoFormulario").val();
+        var formulario = formulario[tipoFormulario]
+
+        Object.keys(formulario).forEach(function (key) {
+            formulario[key] = $("#" + key).val();
+        });
+    }
+
+    // Função para copiar os dados do formulário
+    function copiarDados() {
+        preencherDados();
+        var tipoFormulario = $("#tipoFormulario").val();
+        var formulario = formulario[tipoFormulario]
+
+        var textoCopiado = "";
+        var textoCopiadoHtml = "";
+        Object.keys(formulario).forEach(function (key) {
+            textoCopiado += key.charAt(0).toUpperCase() + key.slice(1) + ": " + formulario[key] + "\n";
+            textoCopiadoHtml += key.charAt(0).toUpperCase() + key.slice(1) + ": " + formulario[key] + "</br>";
+        });
+
+        $("#dadosJson").html(textoCopiadoHtml);
+
+        // Criar um elemento de texto temporário para seleção e cópia
+        var tempInput = $("<textarea>");
+        $("body").append(tempInput);
+        tempInput.val(textoCopiado).select();
+        document.execCommand("copy");
+        tempInput.remove();
+
+        // Limpar os campos do formulário
+        Object.keys(formulario).forEach(function (key) {
+            $("#" + key).val("");
+        });
+
+        alert("Texto copiado para a área de transferência!");
+    }
+
+    // Chamar a função criarFormulario() quando a página carregar para exibir o formulário inicialmente
+    $(document).ready(function () {
+        criarFormulario();
+    });
+</script>
+
+</body>
+</html>
